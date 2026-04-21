@@ -18,6 +18,10 @@ THRESHOLD_DB    = -13.45          # fixed VV threshold for image processing base
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# ── HuggingFace model repos ──────────────────────────────────────────────
+HF_UNET_REPO      = "hardik56711/unet_flood_detection"
+HF_SEGFORMER_REPO  = "hardik56711/segformer_flood_detection"
+
 
 # ── Data loading ──────────────────────────────────────────────────────────
 
@@ -60,7 +64,7 @@ def predict_ip(vv_raw):
 # ── Model loading (cached so weights are downloaded only once) ────────────
 
 @st.cache_resource(show_spinner="Downloading U-Net weights from HuggingFace...")
-def load_unet(hf_repo_id):
+def load_unet():
     model = smp.Unet(
         encoder_name    = "resnet34",
         encoder_weights = None,       # weights come from our checkpoint, not ImageNet
@@ -68,7 +72,7 @@ def load_unet(hf_repo_id):
         classes         = 1,
         activation      = None,
     )
-    weights_path = hf_hub_download(repo_id=hf_repo_id, filename="unet_flood_best.pt")
+    weights_path = hf_hub_download(repo_id=HF_UNET_REPO, filename="unet_flood_best.pt")
     ckpt  = torch.load(weights_path, map_location="cpu")
     state = ckpt.get("model_state_dict", ckpt)
     model.load_state_dict(state)
@@ -77,7 +81,7 @@ def load_unet(hf_repo_id):
 
 
 @st.cache_resource(show_spinner="Downloading SegFormer weights from HuggingFace...")
-def load_segformer(hf_repo_id):
+def load_segformer():
     config = SegformerConfig.from_pretrained(
         "nvidia/mit-b2",
         num_labels   = 1,
@@ -86,7 +90,7 @@ def load_segformer(hf_repo_id):
         label2id     = {"flood": 0},
     )
     model = SegformerForSemanticSegmentation(config)
-    weights_path = hf_hub_download(repo_id=hf_repo_id, filename="segformer_flood_best.pt")
+    weights_path = hf_hub_download(repo_id=HF_SEGFORMER_REPO, filename="segformer_flood_best.pt")
     ckpt  = torch.load(weights_path, map_location="cpu")
     state = ckpt.get("model_state_dict", ckpt)
     model.load_state_dict(state)

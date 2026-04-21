@@ -17,6 +17,7 @@ import streamlit as st
 
 from inference import (
     VV_MEAN, VV_STD, VH_MEAN, VH_STD, THRESHOLD_DB,
+    HF_UNET_REPO, HF_SEGFORMER_REPO,
     load_chip,
     predict_ip, load_unet, load_segformer,
     predict_unet, predict_segformer,
@@ -154,20 +155,18 @@ with st.sidebar:
     st.caption("Sen1Floods11 · Sentinel-1 SAR")
     st.divider()
 
-    # ── Model weights ──────────────────────────────────────────────────────
-    st.subheader("⚙️ Model Weights")
-    hf_repo = st.text_input(
-        "Hugging Face Repo ID",
-        value="YOUR_USERNAME/sen1floods11-models",
-        help="The HuggingFace repo where unet_flood_best.pt and "
-             "segformer_flood_best.pt are stored.",
-    )
-
     # ── Models to run ──────────────────────────────────────────────────────
     st.subheader("🤖 Models")
     run_ip = st.checkbox("Image Processing  (VV ≤ −13.45 dB)", value=True)
     run_un = st.checkbox("U-Net  (ResNet-34 backbone)",         value=True)
     run_sf = st.checkbox("SegFormer  (MiT-B2)",                 value=True)
+
+    # ── Model weights links ───────────────────────────────────────────────
+    st.subheader("📦 Model Weights")
+    st.markdown(
+        f"- [U-Net (ResNet-34)](https://huggingface.co/{HF_UNET_REPO})\n"
+        f"- [SegFormer (MiT-B2)](https://huggingface.co/{HF_SEGFORMER_REPO})"
+    )
 
     st.divider()
 
@@ -281,35 +280,29 @@ if run_ip:
 
 # U-Net
 if run_un:
-    if "YOUR_USERNAME" in hf_repo:
-        st.warning("⚠️ Set your Hugging Face Repo ID in the sidebar before loading neural models.")
-    else:
-        try:
-            unet_model = load_unet(hf_repo)
-            pred_un    = predict_unet(unet_model, s1_norm)
-            results["UNet"] = {
-                "label":   "U-Net\n(ResNet-34)",
-                "pred":    pred_un,
-                "metrics": compute_metrics(pred_un, label, valid_mask),
-            }
-        except Exception as e:
-            st.error(f"U-Net failed: {e}")
+    try:
+        unet_model = load_unet()
+        pred_un    = predict_unet(unet_model, s1_norm)
+        results["UNet"] = {
+            "label":   "U-Net\n(ResNet-34)",
+            "pred":    pred_un,
+            "metrics": compute_metrics(pred_un, label, valid_mask),
+        }
+    except Exception as e:
+        st.error(f"U-Net failed: {e}")
 
 # SegFormer
 if run_sf:
-    if "YOUR_USERNAME" in hf_repo:
-        pass   # warning already shown above
-    else:
-        try:
-            sf_model = load_segformer(hf_repo)
-            pred_sf  = predict_segformer(sf_model, s1_norm)
-            results["SegFormer"] = {
-                "label":   "SegFormer\n(MiT-B2)",
-                "pred":    pred_sf,
-                "metrics": compute_metrics(pred_sf, label, valid_mask),
-            }
-        except Exception as e:
-            st.error(f"SegFormer failed: {e}")
+    try:
+        sf_model = load_segformer()
+        pred_sf  = predict_segformer(sf_model, s1_norm)
+        results["SegFormer"] = {
+            "label":   "SegFormer\n(MiT-B2)",
+            "pred":    pred_sf,
+            "metrics": compute_metrics(pred_sf, label, valid_mask),
+        }
+    except Exception as e:
+        st.error(f"SegFormer failed: {e}")
 
 if not results:
     st.warning("Select at least one model in the sidebar.")
