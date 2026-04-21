@@ -4,6 +4,8 @@ Binary flood segmentation on the [Sen1Floods11](https://github.com/cloudtostreet
 
 **Input:** 2-band SAR (512×512, 10m resolution) | **Output:** Binary flood mask | **Models:** U-Net (ResNet-34) · SegFormer (MiT-B2)
 
+**[Live Demo](https://hardikkamboj-sen1floods11-segmentation-appapp-jni2fg.streamlit.app/)** · **[U-Net Weights](https://huggingface.co/hardik56711/unet_flood_detection)** · **[SegFormer Weights](https://huggingface.co/hardik56711/segformer_flood_detection)**
+
 ## Dataset
 
 Sen1Floods11 contains 446 hand-labeled chips across 11 countries, split into:
@@ -21,10 +23,10 @@ Detailed exploratory data analysis with plots is in [**EDA/README.md**](EDA/READ
 
 ## Models
 
-### U-Net (ResNet-34 backbone, SMP)
+### U-Net (ResNet-34 backbone, SMP) — [weights](https://huggingface.co/hardik56711/unet_flood_detection)
 UNet decoder with a pretrained ResNet-34 encoder from `segmentation-models-pytorch`. Combined Dice + BCE loss with invalid pixel masking. Trained with Adam (lr=3e-3), AMP, gradient clipping, ReduceLROnPlateau scheduler, and early stopping.
 
-### SegFormer (MiT-B2, HuggingFace)
+### SegFormer (MiT-B2, HuggingFace) — [weights](https://huggingface.co/hardik56711/segformer_flood_detection)
 True SegFormer architecture — hierarchical Mix Transformer encoder with a lightweight all-MLP decoder. Logits upsampled 4× from H/4 back to full resolution. Trained with AdamW (lr=6e-5), AMP, gradient clipping, and early stopping.
 
 ## Results
@@ -91,22 +93,19 @@ Both Colab notebooks download the dataset from GCS and save checkpoints to Googl
 
 ## Streamlit Demo App
 
-An interactive web app lets you select any of the 12 curated test chips (or upload your own), and compare all three models side by side.
+**[Try the live demo](https://hardikkamboj-sen1floods11-segmentation-appapp-jni2fg.streamlit.app/)**
 
-### Setup
+An interactive web app that lets you select any of the 12 curated test chips (or upload your own), and compare all three models side by side.
+
+### Run locally
 
 ```bash
 cd app
 pip install -r requirements.txt
-```
-
-Set your HuggingFace repo ID in the sidebar (the repo must contain `unet_flood_best.pt` and `segformer_flood_best.pt`).
-
-### Run
-
-```bash
 streamlit run app.py
 ```
+
+Model weights are downloaded automatically from HuggingFace on first run and cached locally.
 
 ### Features
 - **Sample chips** — 12 curated chips (best, worst, and average from 7 countries)
@@ -121,8 +120,8 @@ streamlit run app.py
 | Asset | Location |
 |---|---|
 | 12 curated test chips | `app/sample_data/` (in repo, ~15 MB) |
-| U-Net weights | HuggingFace Hub (`unet_flood_best.pt`) |
-| SegFormer weights | HuggingFace Hub (`segformer_flood_best.pt`) |
+| U-Net weights | [HuggingFace](https://huggingface.co/hardik56711/unet_flood_detection) (98 MB, cached locally) |
+| SegFormer weights | [HuggingFace](https://huggingface.co/hardik56711/segformer_flood_detection) (110 MB, cached locally) |
 | Image processing baseline | Code only — no weights |
 
 ## Project Structure
