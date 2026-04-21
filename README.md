@@ -78,14 +78,12 @@ Both models struggle on the same Ghana chips, suggesting those chips are inheren
 | Notebook | Description |
 |----------|-------------|
 | `EDA/eda.ipynb` | Exploratory data analysis |
-| `fixed_db_threshold.ipynb` | Best classical baseline — fixed VV threshold at -13.45 dB |
 | `experiments/image_processing_baselines.ipynb` | Classical CV baselines (Otsu, adaptive, K-Means, morphological) |
 | `experiments/remote_sensing_baselines.ipynb` | SAR-specific RS baselines (cross-pol ratio, NDFI, K-I, Lee filter, GLCM) |
-| `model_training.ipynb` | Local training script |
-| `model_training_colab.ipynb` | U-Net Colab training with GDrive checkpointing |
-| `model_training_colab_result.ipynb` | U-Net training run with full outputs |
-| `segformer_training_colab.ipynb` | SegFormer Colab training with GDrive checkpointing |
-| `segformer_training_colab_result.ipynb` | SegFormer training run with full outputs |
+| `training_notebooks/fixed_db_threshold.ipynb` | Best classical baseline — fixed VV threshold at -13.45 dB |
+| `training_notebooks/model_training.ipynb` | Local training script |
+| `training_notebooks/model_training_colab_result.ipynb` | U-Net training run with full outputs |
+| `training_notebooks/segformer_training_colab_result.ipynb` | SegFormer training run with full outputs |
 
 ## Running on Colab
 
@@ -129,7 +127,7 @@ Model weights are downloaded automatically from HuggingFace on first run and cac
 ```
 .
 ├── app/
-│   ├── app.py                                 # Streamlit app
+│   ├── app.py                                 # Streamlit demo app
 │   ├── inference.py                           # Model loading + prediction
 │   ├── requirements.txt
 │   └── sample_data/
@@ -142,11 +140,10 @@ Model weights are downloaded automatically from HuggingFace on first run and cac
 ├── experiments/
 │   ├── image_processing_baselines.ipynb       # Classical CV baselines
 │   └── remote_sensing_baselines.ipynb         # SAR remote sensing baselines
-├── fixed_db_threshold.ipynb                   # Best classical baseline
-├── model_training.ipynb                       # Local training script
-├── model_training_colab.ipynb                 # U-Net Colab notebook
-├── model_training_colab_result.ipynb          # U-Net results
-├── segformer_training_colab.ipynb             # SegFormer Colab notebook
-├── segformer_training_colab_result.ipynb      # SegFormer results
+├── training_notebooks/
+│   ├── fixed_db_threshold.ipynb               # Best classical baseline
+│   ├── model_training.ipynb                   # Local training script
+│   ├── model_training_colab_result.ipynb      # U-Net training run with outputs
+│   └── segformer_training_colab_result.ipynb  # SegFormer training run with outputs
 └── Sen1Floods11/                              # Dataset (git-ignored)
 ```
