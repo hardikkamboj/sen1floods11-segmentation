@@ -212,7 +212,7 @@ with st.sidebar:
         chip_name = s1_file.name.replace("_S1Hand.tif", "")
 
     st.divider()
-    st.caption("CMSC 605 · UMD · 2026")
+    st.caption("MSML 605 · UMD · 2026")
 
 
 # ── Load chip ──────────────────────────────────────────────────────────────
