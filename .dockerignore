@@ -1,0 +1,41 @@
+# Don't bake heavy / private files into the image. The repo is bind-mounted
+# at runtime (see docker-compose.yml), so this only affects `docker build`.
+
+# Datasets and checkpoints — too big, fetched at runtime via make targets.
+data/
+checkpoints/
+Sen1Floods11/
+*.pt
+*.pth
+*.tif
+
+# Cached artifacts.
+.cache/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local secrets and ClearML config.
+.env
+clearml.conf
+.clearml/
+
+# IDE and OS junk.
+.git/
+.github/
+.idea/
+.vscode/
+.DS_Store
+
+# Streamlit / app artifacts.
+.streamlit/
+
+# Generated outputs — regenerated inside the container.
+mlops/results/
+mlops/figures/
+mlops/calibration.json
+
+# Final-presentation files (keynote/pptx aren't needed in the image).
+*.key
+*.pptx
+*.pdf

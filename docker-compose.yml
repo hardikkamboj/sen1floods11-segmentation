@@ -1,0 +1,44 @@
+# docker-compose for the reproducible demo. Brings up the MLOps container
+# with the repo bind-mounted and ClearML credentials passed through.
+#
+# Usage:
+#     docker compose run --rm mlops make demo
+#     docker compose run --rm mlops make benchmark
+#     docker compose run --rm mlops bash      # interactive shell
+
+services:
+  mlops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: flood-mlops:latest
+    container_name: flood-mlops
+    working_dir: /work
+    volumes:
+      # Bind-mount the repo so edits on the host reflect in the container.
+      - ./:/work
+      # Persist model + dataset caches across container restarts.
+      - hf-cache:/work/.cache/huggingface
+      - torch-cache:/work/.cache/torch
+      - clearml-cache:/work/.cache/clearml
+    environment:
+      # Pulled from the host shell — keep these out of the image so credentials
+      # never bake into a published artifact.
+      - CLEARML_API_HOST=${CLEARML_API_HOST:-https://api.clear.ml}
+      - CLEARML_WEB_HOST=${CLEARML_WEB_HOST:-https://app.clear.ml}
+      - CLEARML_FILES_HOST=${CLEARML_FILES_HOST:-https://files.clear.ml}
+      - CLEARML_API_ACCESS_KEY=${CLEARML_API_ACCESS_KEY}
+      - CLEARML_API_SECRET_KEY=${CLEARML_API_SECRET_KEY}
+    # Uncomment for GPU runs (requires nvidia-container-toolkit on the host).
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  hf-cache:
+  torch-cache:
+  clearml-cache:
