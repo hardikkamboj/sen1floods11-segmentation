@@ -103,6 +103,9 @@ calibrate:
 		--out-figure $(FIG_DIR)/ambiguity_calibration.png
 
 
+BIMOD_TAUS    ?= 1.0,2.0,4.0,8.0,16.0
+ALIGNMENT_DB  ?= 2.0
+
 .PHONY: benchmark
 benchmark:
 	$(PYTHON) mlops/benchmark_cascade.py \
@@ -111,6 +114,8 @@ benchmark:
 		--splits-dir      $(SPLITS_DIR) \
 		--segformer-ckpt  $(SEGFORMER_CKPT) \
 		--calibration-json $(CALIBRATION_JSON) \
+		--bimodality-thresholds $(BIMOD_TAUS) \
+		--alignment-db   $(ALIGNMENT_DB) \
 		--out-dir $(RESULTS_DIR) \
 		--fig-dir $(FIG_DIR)
 
