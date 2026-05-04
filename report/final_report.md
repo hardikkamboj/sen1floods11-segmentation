@@ -1,6 +1,6 @@
 # Final Report — Distribution-Aware Cascaded MLOps Pipeline for SAR Flood Segmentation
 
-**Course:** CMSC 605
+**Course:** MSML  605
 **Date:** May 4, 2026
 **Institution:** University of Maryland
 
@@ -9,7 +9,7 @@
 - FNU Hardik
 - Muazuddin Syed
 
-**Repository:** https://github.com/&lt;org&gt;/&lt;repo&gt; *(replace with public repo URL)*
+**Repository:** https://github.com/hardikkamboj/sen1floods11-segmentation 
 **Live demo (Streamlit):** https://hardikkamboj-sen1floods11-segmentation-appapp-jni2fg.streamlit.app/
 **ClearML workspace:** `Sen1Floods11/*` projects on `app.clear.ml`
 
@@ -391,7 +391,7 @@ properties* qualitatively:
 All code, generated artifacts, and reproducibility instructions are
 in the project repository:
 
-- **Repository:** https://github.com/&lt;org&gt;/&lt;repo&gt;
+- **Repository:** https://github.com/hardikkamboj/sen1floods11-segmentation
 - **Reproducibility recipe:** [`REPRODUCING.md`](../REPRODUCING.md)
 - **One-command demo:** `make docker-demo`
 - **Generated assets** (after a successful run):

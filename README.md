@@ -11,7 +11,7 @@ based on the chip's VV-distribution shape. Built on the
 
 ```bash
 # One-command end-to-end reproduction
-git clone <repo-url> && cd group_project
+git clone https://github.com/hardikkamboj/sen1floods11-segmentation.git && cd group_project
 export CLEARML_API_ACCESS_KEY=... CLEARML_API_SECRET_KEY=...
 make docker-demo
 ```

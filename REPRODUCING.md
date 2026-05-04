@@ -23,7 +23,7 @@ matching the report within tolerances noted below.
 ## Quick start (Docker — recommended)
 
 ```bash
-git clone <repo-url> && cd group_project
+git clone https://github.com/hardikkamboj/sen1floods11-segmentation.git && cd group_project
 
 # 1. Set ClearML credentials in your shell (get keys from the ClearML web UI).
 export CLEARML_API_ACCESS_KEY=<your-access-key>
@@ -51,7 +51,7 @@ with no external downloads. **For the full-scale numbers in the report, use
 ## Quick start (local, no Docker)
 
 ```bash
-git clone <repo-url> && cd group_project
+git clone https://github.com/hardikkamboj/sen1floods11-segmentation.git && cd group_project
 
 make setup
 clearml-init                  # paste API keys when prompted
